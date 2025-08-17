@@ -50,7 +50,7 @@ export default function Tempo() {
       <div className="mt-10 flex gap-2">
         <input
           type="text"
-          className="border border-input text-foreground placeholder:text-muted-foreground px-3 h-9 w-full py-1 bg-transparent rounded-md"
+          className="border border-input text-foreground placeholder:text-muted-foreground px-3 h-10 w-full py-1 bg-transparent rounded-md"
           placeholder="Digite a cidade aqui..."
           value={cidade}
           onChange={(e) => setCidade(e.target.value)}
