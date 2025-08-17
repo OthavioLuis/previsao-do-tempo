@@ -15,6 +15,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Previsão do Tempo",
   description: "Saiba como está o tempo agora.",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', type: 'image/x-icon' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({
