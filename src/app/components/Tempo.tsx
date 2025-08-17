@@ -45,7 +45,7 @@ export default function Tempo() {
     <div className="max-w-4xl p-6 mx-auto bg-card">
       <div className="mt-10">
         <h1 className="text-4xl md:text-6xl font-bold">Previsão do <span className="text-primary">Tempo</span></h1>
-        <p className="mt-3 text-muted-foreground">Tá na dúvida se leva guarda-chuva? Digite sua cidade e nós forneceremos a previsão!</p>
+        <p className="mt-3 text-muted-foreground">Tá na dúvida se leva guarda-chuva? Digite sua cidade e vou te fornecer a previsão!</p>
       </div>
       <div className="mt-6 flex gap-2">
         <input
