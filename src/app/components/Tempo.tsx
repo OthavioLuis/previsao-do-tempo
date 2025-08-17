@@ -42,12 +42,12 @@ export default function Tempo() {
   };
 
   return (
-    <div className="max-w-4xl p-6 mx-auto bg-card">
+    <div className="max-w-4xl mx-auto bg-card">
       <div className="mt-10">
         <h1 className="text-4xl md:text-6xl font-bold">Previsão do <span className="text-primary">Tempo</span></h1>
         <p className="mt-3 text-muted-foreground">Tá na dúvida se leva guarda-chuva? Digite sua cidade e vou te fornecer a previsão!</p>
       </div>
-      <div className="mt-6 flex gap-2">
+      <div className="mt-10 flex gap-2">
         <input
           type="text"
           className="border border-input text-foreground placeholder:text-muted-foreground px-3 h-9 w-full py-1 bg-transparent rounded-md"
@@ -73,9 +73,9 @@ export default function Tempo() {
             <Image
               src="/home.png"
               alt="Aguardando dados"
-              width={400}
-              height={400}
-              className="opacity-60"
+              width={450}
+              height={450}
+              className="opacity-80"
             />
           </div>
         )}
