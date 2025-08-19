@@ -5,6 +5,7 @@ import { PrevisaoTempo } from "@/types/weather";
 import PrevisaoHoraria from "./PrevisaoHoraria";
 import PrevisaoAtual from "./PrevisaoAtual";
 import Image from "next/image";
+import { RotateCw } from "lucide-react";
 
 export default function Tempo() {
   const [cidade, setCidade] = useState('');
@@ -12,6 +13,7 @@ export default function Tempo() {
   const [mostrarPrevisaoHoraria, setMostrarPrevisaoHoraria] = useState(false)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [ultimaAtualizacao, setUltimaAtualizacao] = useState<Date | null>(null)
 
   const fetchPrevisao = async () => {
     if (!cidade.trim()) {
@@ -32,6 +34,7 @@ export default function Tempo() {
       }
       const data: PrevisaoTempo = await response.json()
       setPrevisaoData(data)
+      setUltimaAtualizacao(new Date())
       setMostrarPrevisaoHoraria(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
@@ -39,7 +42,27 @@ export default function Tempo() {
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  const handleAtualizar = async () => {
+    if(!cidade) return;
+
+    setLoading(true)
+    try {
+      const response =await fetch(`/api/tempo?city=${encodeURIComponent(cidade)}`)
+
+      if(!response.ok) {
+        throw new Error('Falha ao atualizar dados.')
+      }
+      const data: PrevisaoTempo = await response.json()
+      setPrevisaoData(data)
+      setUltimaAtualizacao(new Date())
+    } catch (err) {
+      setError('Erro ao atualizar os dados')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="max-w-4xl mx-auto bg-card">
@@ -47,7 +70,19 @@ export default function Tempo() {
         <h1 className="text-4xl md:text-6xl font-bold">Previsão do <span className="text-primary">Tempo</span></h1>
         <p className="mt-3 text-muted-foreground">Tá na dúvida se leva guarda-chuva? Digite sua cidade e vou te fornecer a previsão!</p>
       </div>
-      <div className="mt-10 flex gap-2">
+      {previsaoData && (
+        <button
+          onClick={handleAtualizar}
+          disabled={loading}
+          className="flex items-center gap-2 my-3 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          title="Atualizar dados"
+        >
+          <RotateCw size={18} className={loading ? "animate-spin" : ""} />
+          {loading ? "Atualizando" : "Atualizar"}
+        </button>
+      )}
+
+      <div className="mt-3 flex gap-2">
         <input
           type="text"
           className="border border-input text-foreground placeholder:text-muted-foreground px-3 h-10 w-full py-1 bg-transparent rounded-md"
@@ -82,6 +117,16 @@ export default function Tempo() {
       </div>
 
       {previsaoData && <PrevisaoAtual data={previsaoData} />}
+
+      {ultimaAtualizacao && (
+        <div className="mt-4 p-3 bg-muted/50 rounded-lg">
+          <p className="text-sm text-muted-foreground">
+            {previsaoData?.name}, {previsaoData?.sys?.country} •
+            Ultima atualização: {ultimaAtualizacao.toLocaleTimeString('pt-BR')} •
+            Próxima atualizar automática: {new Date(ultimaAtualizacao.getTime() + 30 * 6000).toLocaleTimeString('pt-BR')}
+          </p>
+        </div>
+      )}
 
       {mostrarPrevisaoHoraria && previsaoData && (
         <PrevisaoHoraria cidade={previsaoData.name} />
